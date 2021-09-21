@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fale conosco - Simplicity</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/imagens/favicon.png" type="image/x-icon">
+    <meta name="description" content="Contato entre em contato com a nossa empressa Simplicity.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="contato, sac atendimento, reclamação, duvidas">
+    <link rel="stylesheet" href="css/estilos.css">
+
+
+
+
+
+    <script>
+        VMasker(document.querySelector("#cep")).maskPattern("99999-999");
+        /* cep */
+
+        function inputHandler(masks, max, event) {
+            var c = event.target;
+            var v = c.value.replace(/\D/g, '');
+            var m = c.value.length > max ? 1 : 0;
+            VMasker(c).unMask();
+            VMasker(c).maskPattern(masks[m]);
+            c.value = VMasker.toPattern(v, masks[m]);
+        }
+
+        var telMask = ['(99) 9999-99999', '(99) 99999-9999'];
+
+        var tel = document.querySelector('#telefone');
+
+        VMasker(tel).maskPattern(telMask[0]);
+
+        tel.addEventListener('input', inputHandler.bind(undefined, telMask, 14), false);
+
+
+
+        var docMask = ['999.999.999-999', '99.999.999/9999-99'];
+
+        var doc = document.querySelector('#documento');
+
+        VMasker(doc).maskPattern(docMask[0]);
+
+        doc.addEventListener('input', inputHandler.bind(undefined, docMask, 14), false);
+    </script>
+    <!-- Adicionando JQuery -->
+    <script src="/plugin/jquery-3.6.0.min.js"></script>
+
+    <!-- Adicionando Javascript -->
+    <script>
+        $(document).ready(function() {
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#rua").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+                $("#uf").val("");
+                $("#ibge").val("");
+            }
+
+            //Quando o campo cep perde o foco.
+            $("#cep").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if (validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#rua").val("...");
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#uf").val("...");
+                        $("#ibge").val("...");
+
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#rua").val(dados.logradouro);
+                                $("#bairro").val(dados.bairro);
+                                $("#cidade").val(dados.localidade);
+                                $("#uf").val(dados.uf);
+                                $("#ibge").val(dados.ibge);
+                                $("#status").text("Cep não encontrado")
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                $("#status")("CEP Encontrado encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <!-- Cabecalho topo -->
+    <header>
+        <div class="limitador">
+            <h1><a href="index.html">Simplicity</a></h1>
+            <nav>
+                <h2><a href="" class="icone">Menu &equiv;</a></h2>
+                <ul class="menu">
+                    <li>
+                        <a href="index.html" title="Pagina inicial">Home</a>
+                    </li>
+                    <li>
+                        <a href="produtos.html" title="conheça nossos produtos">Produtos</a>
+                    </li>
+                    <li>
+                        <a href="servicos.html" title="da criação de sites a loja virtual, conheça nossos serviços">Serviços</a>
+                    </li>
+                    <li>
+                        <a href="contato.html" title="Fale com a equipe do simplicity">Contato</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!--  /Fim header -->
+    <!-- conteudo -->
+    <main>
+        <article class="limitador conteudo">
+            <h2>Contato</h2>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos voluptatibus ad eaque mollitia, a ipsam? Nobis aliquid aspernatur architecto, blanditiis libero laboriosam harum, illo similique, esse cumque voluptate expedita laudantium.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex maiores cum ipsa eaque ut consectetur, neque labore nobis blanditiis in, cumque molestias quisquam quos deleniti nisi, veniam numquam illum?</p>
+
+
+            <form action="envia.php" method="post">
+                <div>
+                    <label for="nome">Nome:</label>
+                    <input type="text" name="nome" id="nome" required>
+                </div>
+
+                <div>
+                    <label for="email">E-mail:</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+
+                <div>
+                    <label for="data">Data de nascimento:</label>
+                    <input type="date" name="data" id="data">
+                </div>
+
+                <div>
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" name="telefone" id="telefone" placeholder="Digite apenas números, incluindo o DDD">
+                </div>
+                <div>
+                    <label for="documento">RG ou CPF:</label>
+                    <input type="documento" name="documento" id="documento" placeholder="">
+                </div>
+
+                <div>
+                    <label for="idade">Idade:</label>
+                    <input type="number" name="idade" id="idade" min="18" max="120">
+                </div>
+
+                <div>
+                    <p>Gênero:</p>
+
+                    <input type="radio" name="genero" id="masculino" value="masculino">
+                    <label for="masculino">Masculino</label>
+
+                    <input type="radio" name="genero" id="feminino" value="feminino">
+                    <label for="feminino">Feminino</label>
+
+                    <input type="radio" name="genero" id="outros" value="outros">
+                    <label for="outros">Outros</label>
+                </div>
+
+
+                <div>
+                    <p>Interesses:</p>
+                    <input type="checkbox" name="interesses" id="design" value="design">
+                    <label for="design">Design</label>
+
+                    <input type="checkbox" name="interesses" id="marketing" value="marketing">
+                    <label for="marketing">Marketing</label>
+
+                    <input type="checkbox" name="interesses" id="programacao" value="programacao">
+                    <label for="programacao">Programação</label>
+                </div>
+
+                <div>
+                    <label for="cep">CEP:</label>
+                    <input type="text" id="cep" name="cep" maxlength="9" required>
+                    <b id="status"></b>
+                </div>
+
+                <div>
+                    <label for="rua">Endereço:</label>
+                    <input type="text" name="endereco" id="rua" size="30">
+                </div>
+                <div>
+                    <label for="numero">Numero:</label>
+                    <input type="text" name="numero" id="numero" size="6">
+                </div>
+                <div>
+                    <label for="numero">Complemento:</label>
+                    <input type="text" name="numero" id="numero" size="6">
+                </div>
+
+                <div>
+                    <label for="bairro">Bairro:</label>
+                    <input type="text" name="bairro" id="bairro">
+                </div>
+
+                <div>
+                    <label for="cidade">Cidade:</label>
+                    <input type="text" name="cidade" id="cidade">
+                </div>
+
+                <div>
+                    <label for="uf">Estado:</label>
+                    <input type="text" name="estado" id="uf">
+                </div>
+
+                <div>
+                    <label for="assunto">Assunto:</label>
+                    <select name="assunto" id="assunto">
+                        <option></option>
+                        <option>Dúvidas</option>
+                        <option>Elogios</option>
+                        <option>Reclamações</option>
+                        <option>Outros</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="mensagem">Mensagem:
+                         <span id="maximo"> (restam <b id="caracteres">100</b> caracteres)</span>
+                    </label><br>
+                    <textarea name="mensagens" id="mensagens" cols="20" rows="5" maxlength="100"></textarea>
+                </div>
+
+                <button type="submit">Enviar dados</button>
+            </form>
+        </article>
+
+
+
+
+
+
+
+    </main>
+    <!-- Fim maim -->
+    <!-- Rodapé/parte inferior -->
+    <footer>
+        <p>Simplicity e um site ficticio desenvolvido por Chapolim Colorado - Senac Penha &copy; 2021 </p>
+    </footer>
+    <!-- Fim footer -->
+    <script src="js/menu.js"></script>
+    <script src="/plugin/vanilla-masker.min.js"></script>
+    <!-- mascarando campo telefone -->
+
+    <script>
+        //selecionar os elementos que serão utilizados
+
+        const spanMaximo = $("#maximo");
+        const bCaracteres = $("#caracteres");
+        const textMensagens = $("#mensagens");
+
+        //determinando a quantidade de caractere 
+
+        let quantidade = 100;
+
+        //ouvinde de evento
+
+        textMensagens.on("input", function() {
+            //capturando o que for digitado
+            let conteudo = textMensagens.val();
+            console.log(conteudo);
+
+            //criando a contagem regressiva
+            let contagem = quantidade - conteudo.length;
+            //console.log(contagem);
+
+            bCaracteres.text(contagem);
+
+
+            if (contagem == 0) {
+                spanMaximo.css('color', 'red');
+                spanMaximo.text("Limite de caracteres alcançados");
+            } else {
+                spanMaximo.css('color', 'black');
+                spanMaximo.html("(restam <b id='caracteres'>" + contagem + "</b> caracteres)");
+            }
+        })
+    </script>
+
+</body>
+
+</html>
